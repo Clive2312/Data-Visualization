@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+    <link rel="stylesheet" href="style.css">
+    <title>Smoothed D3.js Radar Chart</title>
+
+    <!-- Google fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+
+            font-size: 11px;
+            font-weight: 300;
+            fill: #242424;
+            text-align: center;
+            cursor: default;
+        }
+
+        .legend {
+            font-family: 'Raleway', sans-serif;
+            fill: #333333;
+        }
+
+        .tooltip {
+            fill: #333333;
+        }
+    </style>
+
+</head>
+<body>
+
+<ul>
+    <li class="dropdown">
+        <a id="a" href="javascript:void(0)" class="dropbtn" onclick="showList(this)">Category</a>
+        <div class="dropdown-content" id="dropdown-a">
+            <a href="#" onclick="RadarChart('.radarChart', data, radarChartOptions,1),hideList('')">Staple Food</a>
+            <a href="#" onclick="RadarChart('.radarChart', data2, radarChartOptions,2),hideList('')">Snacks</a>
+            <a href="#" onclick="RadarChart('.radarChart', data3, radarChartOptions,3),hideList('')">Drinks</a>
+        </div>
+    </li>
+</ul>
+
+
+<div class="radarChart"></div>
+
+<script src="script.js"></script>
+<script>
+
+    /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+
+    //////////////////////////////////////////////////////////////
+    //////////////////////// Set-Up //////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
+        width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+        height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+
+    //////////////////////////////////////////////////////////////
+    ////////////////////////// Data //////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    var data = [
+        [//Quater Pouders
+            {axis:"Serving Size (/20 angs)",value:0.35},
+            {axis:"Calories (/1000Cal)",value:0.52},
+            {axis:"Total Fat (/Daily Value)",value:0.41},
+            {axis:"Cholesterol (/Daily Value)",value:0.31},
+            {axis:"Sodium (/Daily Value)",value:0.60},
+            {axis:"Iron (/Daily Value)",value:0.30},
+            {axis:"Vitamin A (/3 * Daily Value)",value:0.03},
+            {axis:"Protein(/g)",value:0.30}
+        ],[//Big Mac
+            {axis:"Serving Size (/10 angs)",value:0.37},
+            {axis:"Calories (/1000Cal)",value:0.53},
+            {axis:"Total Fat (/Daily Value)",value:0.27},
+            {axis:"Cholesterol (/Daily Value)",value:0.28},
+            {axis:"Sodium (/Daily Value)",value:0.40},
+            {axis:"Iron (/Daily Value)",value:0.25},
+            {axis:"Vitamin A (/4 * Daily Value)",value:0.02},
+            {axis:"Protein(/g)",value:0.30}
+        ],[//Premium Southwest Salad (without Chicken)
+            {axis:"Serving Size (/10 angs)",value:0.41},
+            {axis:"Calories (/1000Cal)",value:0.14},
+            {axis:"Total Fat (% Daily Value)",value:0.05},
+            {axis:"Cholesterol (% Daily Value)",value:0.03},
+            {axis:"Sodium (% Daily Value)",value:0.06},
+            {axis:"Iron (% Daily Value)",value:0.10},
+            {axis:"Vitamin A (% Daily Value)",value:0.53},
+            {axis:"Protein(g))",value:0.06}
+        ],[//McChicken
+            {axis:"Serving Size(/10angs)",value:0.26},
+            {axis:"Calories (/1000Cal)",value:0.36},
+            {axis:"Total Fat (% Daily Value)",value:0.25},
+            {axis:"Cholesterol (% Daily Value)",value:0.11},
+            {axis:"Sodium (% Daily Value)",value:0.33},
+            {axis:"Iron (% Daily Value)",value:0.15},
+            {axis:"Vitamin A (% Daily Value)",value:0},
+            {axis:"Protein(g)",value:0.14}
+        ]
+    ];
+    var data2 = [
+        [//Large French Fries
+            {axis:"Serving Size (/10 angs)",value:0.59},
+            {axis:"Calories (/1000Cal)",value:0.51},
+            {axis:"Total Fat (/Daily Value)",value:0.37},
+            {axis:"Cholesterol (/Daily Value)",value:0},
+            {axis:"Sodium (/Daily Value)",value:0.12},
+            {axis:"Iron (/Daily Value)",value:0.08},
+            {axis:"Sugar (/g)",value:0},
+            {axis:"Protein(/g)",value:0.06}
+        ],[//Hot Caramel Sundae
+            {axis:"Serving Size(/10angs)",value:0.63},
+            {axis:"Calories (/1000Cal)",value:0.33},
+            {axis:"Total Fat (% Daily Value)",value:0.14},
+            {axis:"Cholesterol (% Daily Value)",value:0.08},
+            {axis:"Sodium (% Daily Value)",value:0.07},
+            {axis:"Iron (% Daily Value)",value:0.08},
+            {axis:"Sugar (/g)",value:0.48},
+            {axis:"Protein(g))",value:0.08}
+        ],[//Large French Fries
+            {axis:"Serving Size(/10angs)",value:0.46},
+            {axis:"Calories (/1000Cal)",value:0.34},
+            {axis:"Total Fat (% Daily Value)",value:0.23},
+            {axis:"Cholesterol (% Daily Value)",value:0.11},
+            {axis:"Sodium (% Daily Value)",value:0.33},
+            {axis:"Iron (% Daily Value)",value:0.10},
+            {axis:"Sugar (/g)",value:0.08},
+            {axis:"Protein(g)",value:0.14}
+        ],[//Premium Southwest Salad (without Chicken)
+            {axis:"Serving Size",value:0.23},
+            {axis:"Calories (/1000Cal)",value:0.19},
+            {axis:"Total Fat (% Daily Value)",value:0.18},
+            {axis:"Cholesterol (% Daily Value)",value:0.09},
+            {axis:"Sodium (% Daily Value)",value:0.15},
+            {axis:"Iron (% Daily Value)",value:0.02},
+            {axis:"Sugar (/g)",value:0},
+            {axis:"Protein(g)",value:0.09}]
+    ];
+    var data3 = [
+        [//Vanilla Shake
+            {axis:"Calories (/2000Cal)",value:0.41},
+            {axis:"Total Fat (/Daily Value)",value:0.35},
+            {axis:"Cholesterol (/Daily Value)",value:0.29},
+            {axis:"Sodium (/Daily Value)",value:0.11},
+            {axis:"Sugar (/2g)",value:0.51},
+            {axis:"Iron (/Daily Value)",value:0},
+            {axis:"Vitamin A (/Daily Value)",value:0.3},
+            {axis:"Protein(/g)",value:0.18}
+        ],[//McFlurry Oreo
+            {axis:"Calories (/2000Cal)",value:0.35},
+            {axis:"Total Fat (/Daily Value)",value:0.35},
+            {axis:"Cholesterol (/Daily Value)",value:0.19},
+            {axis:"Sodium (/Daily Value)",value:0.16},
+            {axis:"Sugar (/2g)",value:0.43},
+            {axis:"Iron (/Daily Value)",value:0.15},
+            {axis:"Vitamin A (/Daily Value)",value:0.2},
+            {axis:"Protein(/g)",value:0.15}
+        ],[ //Hot chocolate
+            {axis:"Calories (/2000Cal)",value:0.27},
+            {axis:"Total Fat (/Daily Value)",value:0.31},
+            {axis:"Cholesterol (/Daily Value)",value:0.20},
+            {axis:"Sodium (/Daily Value)",value:0.12},
+            {axis:"Sugar (/2g)",value:0.34},
+            {axis:"Iron (/Daily Value)",value:0.08},
+            {axis:"Vitamin A (/Daily Value)",value:0.2},
+            {axis:"Protein(/g)",value:0.17}
+        ],[//Vanilla Shake
+            {axis:"Calories (/2000Cal)",value:0.14},
+            {axis:"Total Fat (/Daily Value)",value:0.21},
+            {axis:"Cholesterol (/Daily Value)",value:0.14},
+            {axis:"Sodium (/Daily Value)",value:0.08},
+            {axis:"Sugar (/2g)",value:0.1},
+            {axis:"Iron (/Daily Value)",value:0.01},
+            {axis:"Vitamin A (/Daily Value)",value:0.15},
+            {axis:"Protein(/g)",value:0.15}
+        ]
+    ];
+    //////////////////////////////////////////////////////////////
+    //////////////////// Draw the Chart //////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    var color = d3.scale.ordinal()
+        .range(["#EDC951","#CC333F","#00A0B0","#D3A4FF"]);
+
+    var radarChartOptions = {
+        w: width,
+        h: height,
+        margin: margin,
+        maxValue: 0.5,
+        levels: 5,
+        roundStrokes: true,
+        color: color
+    };
+    //Call function to draw the Radar chart
+
+</script>
+</body>
+</html>

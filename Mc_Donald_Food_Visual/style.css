@@ -1,0 +1,70 @@
+body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+li {
+    float: left;
+}
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: #1f75cf;
+}
+li.dropdown {
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fafafa;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+.dropdown-content a:hover {
+    color: white;
+    background-color: #1f75cf;
+}
+.show {
+    display: block;
+}
+.legend .yellow {
+    fill: rgba(255, 255, 0, 0.6);
+    stroke: rgba(255, 255, 0, 0.6);
+}
+.legend .red {
+    fill: rgba(255, 0, 0, 0.6);
+    stroke: rgba(255, 0, 0, 0.6);
+}
+
+.legend .blue {
+    fill: rgba(0, 255, 255, 0.6);
+    stroke: rgba(0, 255, 255, 0.6);
+}
+
+.legend .purple {
+    fill: rgba(150, 100, 255, 0.6);
+    stroke: rgba(150, 100, 255, 0.6);
+}
+
+.legend .legend-bg {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(0, 0, 0, 0);
+}
